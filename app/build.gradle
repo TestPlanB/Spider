@@ -1,0 +1,80 @@
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.spider.plugins'
+
+
+android {
+
+    compileSdkVersion 29
+    defaultConfig {
+
+        applicationId "com.example.spider"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+
+hook {
+    //表示要处理的数据类型是什么，CLASSES 表示要处理编译后的字节码(可能是 jar 包也可能是目录)，RESOURCES 表示要处理的是标准的 java 资源
+    inputTypes CONTENT_CLASS
+    //表示Transform 的作用域，这里设置的SCOPE_FULL_PROJECT代表作用域是全工程
+    scopes SCOPE_FULL_PROJECT
+    //表示是否支持增量编译，false不支持
+    isIncremental false
+    //是否打印扫描到的方法的信息，包含类名，方法名，方法签名
+    isNeedLog true
+    //表示需要被hook的方法
+    hookMethods {
+        println("hookMethodList ")
+        // 一下参数意思：需要hook的模式 / 被hook类 /类中的方法 / 方法签名
+        hookMethod hookMode.BeforeMethod, "com/example/spider/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
+            println("before")
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/example/spider/LogTest", "before", "()V", false)
+        }
+
+        hookMethod hookMode.Default,  "com/example/spider/LogUtils", "test", "()V", { MethodVisitor mv ->
+
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/example/spider/LogTest", "test", "()V", false)
+
+        }
+
+        hookMethod hookMode.AfterMethod, "com/example/spider/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
+            println("after")
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/example/spider/LogTest", "after", "()V", false)
+        }
+    }
+}
+
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+
+
+}
