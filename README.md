@@ -26,13 +26,12 @@ todo
 ```
 
 ### 自定义规则编写
-
-```
 例子如下：hook里面可以编写规则，无特别需求可以如下所示，我们要关注hookMethods里面，一个hookMethods有多个hookmethod 方法可以使用，第一个参数就是定义好的模式，Spider提供了
 以下模式：BeforeMethod（方法前） Default（方法本身） AfterMethod（方法执行后），第二个参数是我们需要hook的类名，第三个参数是需要hook的方法，第四个是方法签名，第五个是一个groovy
 写法的闭包，可以理解为函数，里面有一个MethodVisitor的参数，我们可以利用这个做到自定义修改规则，不熟悉ASM的朋友可以利用ASM bytecode viewer插件（可以在AS里面下载），生成我们想要的字节码规则。
-比如我想在MainActivity 的 onCreate方法开始前插入一个方法，
 
+```
+比如我想在MainActivity 的 onCreate方法开始前插入一个方法，
 hookMethod hookMode.BeforeMethod, "com/example/spider/MainActivity", "onCreate", "(Landroid/os/Bundle;)V", { MethodVisitor mv ->
             println("before")
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/example/spider/LogTest", "before", "()V", false)
