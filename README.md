@@ -27,7 +27,7 @@ todo
 
 ### 自定义规则编写
 例子如下：hook里面可以编写规则，无特别需求可以如下所示，我们要关注hookMethods里面，一个hookMethods有多个hookmethod 方法可以使用。
-* **第一个参数就是定义好的模式，Spider提供了以下模式：BeforeMethod（方法前） Default（方法本身） AfterMethod（方法执行后）以下模式：BeforeMethod（方法前） Default（方法本身） AfterMethod（方法执行后）， 第二个参数是我们需要hook的类名，第三个参数是需要hook的方法，第四个是方法签名，第五个是一个groovy**
+* **第一个参数就是定义好的模式，Spider提供了以下模式：BeforeMethod（方法前） Default（方法本身） AfterMethod（方法执行后）以下模式：BeforeMethod（方法前） Default（方法本身） AfterMethod（方法执行后）**
 * **第二个参数是我们需要hook的类名**
 * **第三个参数是需要hook的方法**
 * **第四个是方法签名**
